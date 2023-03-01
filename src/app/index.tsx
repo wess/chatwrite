@@ -1,6 +1,4 @@
 import React, {Suspense} from 'react';
-import {useRoutes} from 'react-router-dom';
-import routes from '~react-pages';
 
 import {
   ChakraProvider,
@@ -14,7 +12,8 @@ import {
 
 import {Theme} from '../theme';
 import Provider from '../providers';
-import Layout from './layout';
+import Layout from './layouts';
+import Router from '../router';
 
 export const cssFixes = css`
   .js-focus-visible :focus:not([data-focus-visible-added]) {
@@ -33,7 +32,7 @@ const App = () => {
         <Global styles={cssFixes}/>
         <Provider>
           <Layout>
-            {useRoutes(routes)}
+            <Router/>
           </Layout>
         </Provider>
       </ChakraProvider>

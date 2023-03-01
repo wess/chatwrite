@@ -5,10 +5,11 @@ import ApiProvider from './api';
 
 import {FlashProvider} from './flash';
 
-export {default as FormProvider} from './form';
+import FormProvider from './form';
 
 export {
   FlashProvider,
+  FormProvider,
 }
 
 const Component = ({children}) => (

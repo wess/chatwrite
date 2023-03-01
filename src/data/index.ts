@@ -1,9 +1,8 @@
+export {default as Settings} from './settings';
+export {default as Session} from './session';
+export {default as Preferences} from './preferences';
 
-export type {default as Settings} from './settings';
-
-import Locale from '../locale';
-
-const prefix = Locale.branding.toLowerCase();
+const prefix = "chatwrite.prefix";
 
 const _key = (key:string) => {
   return `${prefix}.${key}`;

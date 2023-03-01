@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "es2022", "esnext"],
     "types": ["vite/client"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -12,13 +12,18 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "strict": false,
-    "module": "esnext",
+    "module": "ES2022",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmit": true,
     "noImplicitAny": false,
-    "jsx": "react"
+    "jsx": "react",
+    "rootDir": "./src",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/**/*.d.ts"
+    ]
   },
   "include": ["./src"],
   "references": [{ "path": "./tsconfig.node.json" }]

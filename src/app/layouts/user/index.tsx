@@ -1,14 +1,16 @@
 import React from 'react';
 
 import {
+  HStack,
   VStack,
+  Box
 } from '@chakra-ui/react';
 
 const Component = ({children}) => {
   return (
-    <VStack w='full' h='full' justify='flex-start' align='flex-start'>
+    <Box w='100%' h='100vh'> 
       {children}
-    </VStack>
+    </Box>
   );
 }
 
