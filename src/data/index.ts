@@ -1,35 +1,33 @@
-export {default as Settings} from './settings';
-export {default as Session} from './session';
-export {default as Preferences} from './preferences';
+export { type Settings } from "./settings";
+export { type Session } from "./session";
+export { type Preferences } from "./preferences";
 
 const prefix = "chatwrite.prefix";
 
-const _key = (key:string) => {
+const _key = (key: string) => {
   return `${prefix}.${key}`;
-}
-
+};
 
 let MEM_STORE = {};
 
-
 const memStorage = {
-  get(key:string, fallback:any = null): any | null {
+  get(key: string, fallback: any = null): any | null {
     var res = MEM_STORE[_key(key)];
-    if(res != null) {
+    if (res != null) {
       return JSON.parse(res);
     }
 
     return fallback;
   },
 
-  set(key:string, value:any) {
+  set(key: string, value: any) {
     MEM_STORE[_key(key)] = JSON.stringify(value);
   },
 
-  delete(key:string): any | null {
+  delete(key: string): any | null {
     let res = this.get(_key(key));
 
-    if(res != null) {
+    if (res != null) {
       delete MEM_STORE[_key(key)];
     }
 
@@ -37,38 +35,37 @@ const memStorage = {
   },
 
   clear() {
-    MEM_STORE = {};    
-  }
-}
-
-export default
- (typeof window === 'undefined') 
- ? memStorage
- : {
-  get(key:string, fallback:any = null): any | null {
-    var res = localStorage.getItem(_key(key));
-    if(res != null) {
-      return JSON.parse(res);
-    }
-
-    return fallback;
+    MEM_STORE = {};
   },
+};
 
-  set(key:string, value:any) {
-    localStorage.setItem(_key(key), JSON.stringify(value));
-  },
+export default typeof window === "undefined"
+  ? memStorage
+  : {
+      get(key: string, fallback: any = null): any | null {
+        var res = localStorage.getItem(_key(key));
+        if (res != null) {
+          return JSON.parse(res);
+        }
 
-  delete(key:string): any | null {
-    let res = this.get(_key(key));
+        return fallback;
+      },
 
-    if(res != null) {
-      localStorage.removeItem(_key(key));
-    }
+      set(key: string, value: any) {
+        localStorage.setItem(_key(key), JSON.stringify(value));
+      },
 
-    return res;
-  },
+      delete(key: string): any | null {
+        let res = this.get(_key(key));
 
-  clear() {
-    localStorage.clear();
-  }
- }
+        if (res != null) {
+          localStorage.removeItem(_key(key));
+        }
+
+        return res;
+      },
+
+      clear() {
+        localStorage.clear();
+      },
+    };
