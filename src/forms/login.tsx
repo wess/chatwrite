@@ -59,7 +59,8 @@ const Login = (props) => {
     const {email, password} = values;
     
     try {
-      const response = await api.account.createSession(email, password);
+      const response = await api.account.createEmailSession(email, password);
+      
       setSession(response);
       navigate('/');
       

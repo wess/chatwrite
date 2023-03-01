@@ -1,5 +1,5 @@
 import React from 'react';
-import {Query} from 'appwrite';
+import {ID, Query} from 'appwrite';
 
 import {
   HStack,
@@ -9,6 +9,7 @@ import {
   TableContainer,
   Table,
   Tbody,
+  Tfoot,
   Tr,
   Td,
   Button,
@@ -27,11 +28,17 @@ const DB_ID = '63ff8af994e3c1ca7599';
 const MSG_ID = '63ff8b0a6ec746fae820';
 
 const Component = (_props) => {
+  let bottomRef = React.useRef();
+
   const {setSession} = useSession();
   let [user, setUser] = React.useState<string>(null);
   let [messages, setMessages] = React.useState([]);
   let [pendingMessage, setPendingMessage] = React.useState('');
   let api = useApi();
+
+  const scrollBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" })      
+  }
 
   const getUser = async () => {
     try {
@@ -50,46 +57,43 @@ const Component = (_props) => {
 
     setPendingMessage('');
 
-    await api.database.createDocument(DB_ID, MSG_ID, 'unique()', {
+    await api.database.createDocument(DB_ID, MSG_ID, ID.unique(), {
       user,
       message,
       created: new Date().toISOString(),
     });
   }
 
-  api.client.subscribe('databases.*.collections.*.documents.create', _res => {
-    getMessages();
-  }); // messages
-
-  
   const getMessages = async () => {
-    const list = await api.database.listDocuments(DB_ID, MSG_ID,[
-      Query.orderDesc('created'),
-      Query.limit(100),
-    ]);
+    const list = await api.database.listDocuments(
+      DB_ID, 
+      MSG_ID, [
+        Query.limit(100),
+        Query.orderDesc('created'),
+      ]
+    );
 
-    const messages = list.documents.reverse();
+    const messages = list.documents;
     setMessages(
       messages.map((doc) => {
         return { name: doc["user"], message: doc["message"] };
-      })
+      }, scrollBottom)
     );
-
-    // After render
-    setTimeout(() => {
-      const chatEl = document.getElementById("chat");
-      chatEl.scrollTop = chatEl.scrollHeight;
-    }, 0);
   };
 
   const effect = async () => {
     await getUser();
     await getMessages();
+
+    api.client.subscribe("documents", _res => {
+      getMessages();
+    }); // messages
   }
 
   React.useEffect(() => {
+    scrollBottom();
     effect();
-  }, []);
+  }, [effect, scrollBottom]);
 
   if(user == null) {
     return (
@@ -121,7 +125,9 @@ const Component = (_props) => {
                 </Tr>  
                 ))
               }
+
               </Tbody>
+              <Tfoot ref={bottomRef} />
             </Table>
           </TableContainer>
         </Box>

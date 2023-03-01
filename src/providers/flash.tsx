@@ -31,7 +31,7 @@ const Context = React.createContext({
 });
 
 export const FlashProvider = ({children}) => {
-  const [flash, _setFlash] = React.useState<FlashMessage | null>(Data.get('pending.flash'));
+  const [flash, _setFlash] = React.useState<FlashMessage | null>(null);
 
   const setFlash = (message: FlashMessage | null) => {
     if(message == null) {

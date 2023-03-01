@@ -1,6 +1,6 @@
-export {default as Settings} from './settings';
-export {default as Session} from './session';
-export {default as Preferences} from './preferences';
+export {type Settings} from './settings';
+export {type Session} from './session';
+export {type Preferences} from './preferences';
 
 const prefix = "chatwrite.prefix";
 
