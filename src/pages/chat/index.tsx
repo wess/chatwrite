@@ -67,9 +67,9 @@ const Component = (_props) => {
   const getMessages = async () => {
     const list = await api.database.listDocuments(
       DB_ID, 
-      MSG_ID, [
-        Query.limit(100),
-        Query.orderDesc('created'),
+      MSG_ID,
+      [
+        Query.limit(40),
       ]
     );
 
