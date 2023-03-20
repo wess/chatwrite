@@ -1,5 +1,6 @@
 import React from 'react';
 import {ID, Query} from 'appwrite';
+import dayjs from 'dayjs';
 
 import {
   HStack,
@@ -62,6 +63,8 @@ const Component = (_props) => {
       message,
       created: new Date().toISOString(),
     });
+
+    await getMessages();
   }
 
   const getMessages = async () => {
@@ -69,31 +72,42 @@ const Component = (_props) => {
       DB_ID, 
       MSG_ID,
       [
-        Query.limit(40),
+        Query.limit(100),
+        Query.orderAsc('created'),
+        Query.offset(messages.length)
       ]
     );
 
-    const messages = list.documents;
-    setMessages(
-      messages.map((doc) => {
-        return { name: doc["user"], message: doc["message"] };
-      }, scrollBottom)
-    );
+    const incoming = list.documents.map((doc) => {
+      return { 
+        id: doc["id"], 
+        name: doc["user"], 
+        message: doc["message"] ,
+        created: dayjs(doc["created"]).format('MM.DD.YY-HH:mm')
+      };
+    });
+
+    setMessages([
+      ...messages,
+      ...incoming
+    ]);
   };
 
   const effect = async () => {
     await getUser();
-    await getMessages();
+
+    if(messages.length == 0) await getMessages();
 
     api.client.subscribe("documents", _res => {
       getMessages();
     }); // messages
+
+    scrollBottom();
   }
 
   React.useEffect(() => {
-    scrollBottom();
     effect();
-  }, [effect, scrollBottom]);
+  }, [effect]);
 
   if(user == null) {
     return (
