@@ -9,10 +9,9 @@ import {
 const PROJECT_ID = '63ff89e0cd55bd8f7b96';
 const ENDPOINT = 'https://cloud.appwrite.io/v1';
 
-
 const appwrite = new Client();
 appwrite.setEndpoint(ENDPOINT)
-      .setProject(PROJECT_ID);
+        .setProject(PROJECT_ID);
 
 const client = {
   client: appwrite,
@@ -29,3 +28,5 @@ const Component = ({children}) => (
 export const useApi = () => React.useContext(Context);
 
 export default Component;
+
+

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "clean": "rm -rf dist && mkdir dist",
-    "dev": "vite --force",
+    "dev": "vite --force --host",
     "build": "tsc && vite build --outDir ./dist",
     "preview": "vite preview"
   },
